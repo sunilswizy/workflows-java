@@ -1,27 +1,22 @@
-name: Build
-'on':
+name: My Test Monorepo Project
+on:
   push:
-    branches:
-      - '*'
+      branches:
+      - main
+      paths:
+      - 'lambdas/test/**'
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    types: [opened, synchronize, reopened]
 jobs:
-  build:
-    name: Build
+  sonarcloudScan1:
+    name: SonarCloudScan1
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-
-      - name: Build and analyze
+          fetch-depth: 0  
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: 0ec24bf8-94cd-4e79-b1f1-00b50cb4c56c
+          GITHUB_TOKEN: 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
           SONAR_TOKEN: 811c9a490983734401ba4e491eaefc8bfa7281de
-        run: >-
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Dsonar.projectKey=sunilswizy_workflows-java
-          -Dsonar.login=811c9a490983734401ba4e491eaefc8bfa7281de
